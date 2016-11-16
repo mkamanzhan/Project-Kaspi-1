@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'project_kaspi_1'
+    'rest_framework',
+
+    'project_kaspi_1',
 ]
 
 MIDDLEWARE = [

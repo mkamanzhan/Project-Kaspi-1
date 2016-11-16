@@ -102,9 +102,15 @@ class Command(BaseCommand):
 		except:
 			lng = None
 
+		try:
+			category = item['venue']['categories'][0]['name']
+		except:
+			category = None
+
 		Venue(
 			name = name,
 			address = address,
+			category = category,
 			lat = lat,
 			lng = lng
 			).save()
