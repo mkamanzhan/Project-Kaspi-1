@@ -14,7 +14,7 @@ class Command(BaseCommand):
 		'radius': 100000,
 		'client_id': 'W2A3U41LO1HEP1HIAWLYIULTXHHGUWT01PK5S30WVQMFCY34',
 		'client_secret': 'FR0DLZP2RP0D05RECBLGQXYKDKG3TDG2ZEPK5MPRKIUF4SST',
-		'v':20161115,
+		'v':20161116,
 	}
 
 	total_pages = 0
@@ -31,19 +31,21 @@ class Command(BaseCommand):
 	def handle(self, *args, **options):
 		Venue.objects.all().delete()
 		threads = []
-		k = 0
+	
 		self.total_pages = self.getOffsetMax()
-		while(k != self.total_pages):
-			threads.append(threading.Thread(target=self.parseUrl, args=(k,)))
-			k += 1
-		for i in threads:
-			i.start()
-			print(str(self.process_count*100/self.total_pages) + '%')
-			sys.stdout.write("\033[F")
-		for i in threads:
-			i.join()
-			print(str(self.process_count*100/self.total_pages) + '%')
-			sys.stdout.write("\033[F")
+
+		for i in range(self.total_pages):
+			threads.append(threading.Thread(target=self.parseUrl, args=(i,)))
+			if(i%20==0 or i==(self.total_pages - 1)):
+				for i in threads:
+					i.start()
+					print(str(self.process_count*100/self.total_pages) + '%')
+					sys.stdout.write("\033[F")
+				for i in threads:
+					i.join()
+					print(str(self.process_count*100/self.total_pages) + '%')
+					sys.stdout.write("\033[F")
+				threads = []
 		self.printResults()
 		
 
@@ -59,7 +61,7 @@ class Command(BaseCommand):
 
 	def getOffsetMax(self):
 		r = requests.get(self.url, params=self.params).json()
-		return r['response']['totalResults'] - 1
+		return r['response']['totalResults']
 
 
 
@@ -68,7 +70,7 @@ class Command(BaseCommand):
 		params['offset'] = offset
 		try:
 			r = requests.get(self.url, params=params).json()
-			if(r['meta']['code'] == 200 and len(r['response']['groups'][0]['items'])!=0):
+			if(r['meta']['code'] == 200):
 				for item in r['response']['groups'][0]['items']:
 					self.saveVenue(item)
 					self.success_venue_count += 1
@@ -82,6 +84,11 @@ class Command(BaseCommand):
 
 
 	def saveVenue(self,item):
+		try:
+			vid = item['venue']['id']
+		except:
+			vid = None
+
 		try:
 			name = item['venue']['name']
 		except:
@@ -107,10 +114,12 @@ class Command(BaseCommand):
 		except:
 			category = None
 
+		'''
 		Venue(
+			vid = vid,
 			name = name,
 			address = address,
 			category = category,
 			lat = lat,
 			lng = lng
-			).save()
+		).save()'''
