@@ -10,7 +10,7 @@ class Command(BaseCommand):
 	
 
 	def handle(self, *args, **options):
-		print '-'*5 + ' Upload Venue ' + '-'*5
+		print '-'*5 + ' Upload Venues ' + '-'*5
 		venue_seeder = VenueSeeder()
 		venue_seeder.seed()
 

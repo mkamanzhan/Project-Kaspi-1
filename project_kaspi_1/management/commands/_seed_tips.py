@@ -4,16 +4,17 @@ import math
 import time
 
 from project_kaspi_1.models import Venue, Tip
+from project_kaspi_1.management.commands._fsq_settings import fsq_settings
 
 class TipSeeder:
 	limit = 100
 
-	url = 'https://api.foursquare.com/v2/venues/{}/tips'
+	url = fsq_settings['tip']['url']
 	params = {
-		'sort': 'popular',
-		'client_id': 'W2A3U41LO1HEP1HIAWLYIULTXHHGUWT01PK5S30WVQMFCY34',
-		'client_secret': 'FR0DLZP2RP0D05RECBLGQXYKDKG3TDG2ZEPK5MPRKIUF4SST',
-		'v':20161116,
+		'sort': fsq_settings['tip']['sort'],
+		'client_id': fsq_settings['client_id'],
+		'client_secret': fsq_settings['client_secret'],
+		'v':fsq_settings['v'],
 	}
 	
 	threads = []

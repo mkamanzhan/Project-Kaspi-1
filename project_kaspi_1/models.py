@@ -22,6 +22,6 @@ class Venue(models.Model):
 
 class Tip(models.Model):
 	tid = models.CharField(max_length=128, unique=True, blank=True, null=True)
-	vid = models.CharField(max_length=128, blank=True, null=True)
+	vid = models.ForeignKey(Venue, null=True, blank=True)
 	name = models.CharField(max_length=128, blank=True, null=True)
 	text = models.TextField()

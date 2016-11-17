@@ -5,18 +5,19 @@ import sys
 import time
 
 from project_kaspi_1.models import Venue
+from project_kaspi_1.management.commands._fsq_settings import fsq_settings
 
 class VenueSeeder:
-	limit = 50
+	limit = fsq_settings['venue']['limit']
 
-	url = 'https://api.foursquare.com/v2/venues/explore'
+	url = fsq_settings['venue']['url']
 	params = {
-		'll': '43.2551,76.9126',
-		'limit': limit,
-		'radius': 100000,
-		'client_id': 'W2A3U41LO1HEP1HIAWLYIULTXHHGUWT01PK5S30WVQMFCY34',
-		'client_secret': 'FR0DLZP2RP0D05RECBLGQXYKDKG3TDG2ZEPK5MPRKIUF4SST',
-		'v':20161116,
+		'll': fsq_settings['venue']['ll'],
+		'limit': fsq_settings['venue']['limit'],
+		'radius': fsq_settings['venue']['radius'],
+		'client_id': fsq_settings['client_id'],
+		'client_secret': fsq_settings['client_secret'],
+		'v':fsq_settings['v'],
 	}
 
 
@@ -43,17 +44,7 @@ class VenueSeeder:
 		self.total_pages = int(math.ceil(self.total_results/self.limit)) + 1
 		for i in range(self.total_pages):
 			threads.append(threading.Thread(target=self.parseUrl, args=(i,)))
-				
-		for i in threads:
-			i.start()
-			print(str(self.process_count*100/self.total_pages) + '%')
-			sys.stdout.write("\033[F")
-		
-		for i in threads:
-			i.join()
-			print(str(self.process_count*100/self.total_pages) + '%')
-			sys.stdout.write("\033[F")
-				
+		self.runThreads(threads)
 		self.printResults()
 	
 
@@ -65,6 +56,23 @@ class VenueSeeder:
 		print 'Can\'t connect to Page: ' + str(self.error_connection_count)
 		print 'Can\'t decode JSON:' + str(self.error_decode_count)
 		print 'Execution time: {:.3f}'.format(time.time() - self.start_time) + 'sec'
+
+
+
+	def runThreads(self, threads, thread_limit=20):
+		length = len(threads)
+		for i in range(length):
+			if(i%thread_limit==0):
+				for thread in threads[i-thread_limit:i]:
+					thread.start()
+				for thread in threads[i-thread_limit:i]:
+					thread.join()
+					
+			elif(i == length-1):
+				for thread in threads[(i/thread_limit)*thread_limit:i+1]:
+					thread.start()
+				for thread in threads[(i/thread_limit)*thread_limit:i+1]:
+					thread.join()
 
 
 
