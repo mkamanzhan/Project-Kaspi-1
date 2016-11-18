@@ -1,7 +1,8 @@
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from rest_framework import serializers
-from . import models
+from project_kaspi_1.models import Venue
 
-class VenueSerializer(serializers.Serializer):
+class VenueGeoSerializer(GeoFeatureModelSerializer):
 	class Meta:
 		model = Venue
+		geo_field = "point"

@@ -41,6 +41,7 @@ class VenueSeeder:
 		Venue.objects.all().delete()
 		threads = []
 		self.total_results = self.getTotalResults()
+
 		self.total_pages = int(math.ceil(self.total_results/self.limit)) + 1
 		for i in range(self.total_pages):
 			threads.append(threading.Thread(target=self.parseUrl, args=(i,)))
@@ -77,9 +78,11 @@ class VenueSeeder:
 
 
 	def getTotalResults(self):
-		r = requests.get(self.url, params=self.params).json()
-		return r['response']['totalResults']
-
+		try:
+			r = requests.get(self.url, params=self.params).json()
+			return r['response']['totalResults']
+		except:
+			raise requests.exceptions.ConnectionError
 
 
 	def parseUrl(self, offset):

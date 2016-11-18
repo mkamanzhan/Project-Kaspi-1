@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
 
     'project_kaspi_1',
+    'rest_framework_gis',
 ]
 
 MIDDLEWARE = [
@@ -124,3 +125,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.TemplateHTMLRenderer',
+        'rest_framework.renderers.JSONRenderer',
+    ),
+    'TIME_FORMAT': '%H:%M',
+    'TIME_INPUT_FORMAT': '%H:%M',
+}

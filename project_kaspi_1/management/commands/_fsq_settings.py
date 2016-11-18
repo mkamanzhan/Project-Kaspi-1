@@ -5,9 +5,9 @@ fsq_settings = {
 	
 	'venue': {
 		'url': 'https://api.foursquare.com/v2/venues/explore',
-		'll': '43.2551,76.9126',
+		'll': '43.237259, 76.915419',
 		'limit': 50,
-		'radius': 100000,
+		'radius': 10000,
 	},
 	
 	'tip': {

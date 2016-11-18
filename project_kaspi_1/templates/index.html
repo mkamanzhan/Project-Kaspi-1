@@ -1,1 +1,18 @@
-{{ data }}
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'style/index.css' %}">
+
+	<script type="text/javascript" src="{% static 'libs/jquery/jquery-2.2.4.min.js'%}"></script>
+	<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+	<script type="text/javascript" src="{% static 'js/map.js' %}"></script>
+	<title>Map</title>
+</head>
+<body>
+
+	<div id="map">
+		
+	</div>
+</body>
+</html>

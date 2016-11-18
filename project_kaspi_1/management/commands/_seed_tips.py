@@ -42,7 +42,7 @@ class TipSeeder:
 		if(len(venues) == 0):
 			print 'No venues detected\nFirstly upload venues'
 		for venue in venues:
-			pages_threads.append(threading.Thread(target=self.parseVenue, args=(venue.vid,)))
+			pages_threads.append(threading.Thread(target=self.parseVenue, args=(venue,)))
 
 		self.runThreads(pages_threads)
 		self.runThreads(self.threads)
@@ -77,11 +77,11 @@ class TipSeeder:
 
 
 
-	def parseVenue(self, vid):
-		total_result = self.getTotalResults(vid)
+	def parseVenue(self, venue):
+		total_result = self.getTotalResults(venue.vid)
 		total_pages = int(math.ceil(total_result / self.limit)) + 1
 		for i in range(total_pages):
-			self.threads.append(threading.Thread(target=self.parseUrl, args=(vid, i * self.limit,)))
+			self.threads.append(threading.Thread(target=self.parseUrl, args=(venue, i * self.limit,)))
 	
 		
 
@@ -102,14 +102,14 @@ class TipSeeder:
 
 
 
-	def parseUrl(self, vid, page):
+	def parseUrl(self, venue, page):
 		params = self.params
 		params['offset'] = page
 		try:
-			r = requests.get(self.url.format(vid), params=self.params).json()
+			r = requests.get(self.url.format(venue.vid), params=self.params).json()
 			if(r['meta']['code'] == 200):
 				for item in r['response']['tips']['items']:
-					self.saveTip(item, vid)
+					self.saveTip(item, venue)
 				self.success_tips_pages += 1
 			else:
 				self.error_tips_decode += 1
@@ -120,7 +120,7 @@ class TipSeeder:
 
 
 
-	def saveTip(self, item, vid):
+	def saveTip(self, item, venue):
 		tid = item['id']
 		text = item['text']
 		name = item['user']['firstName']
@@ -128,7 +128,7 @@ class TipSeeder:
 		try:
 			Tip(
 				tid = tid,
-				vid = vid,
+				vid = venue,
 				name = name,
 				text = text
 			).save()

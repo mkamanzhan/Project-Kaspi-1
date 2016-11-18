@@ -11,9 +11,6 @@ class Venue(models.Model):
 	lng = models.FloatField(blank=True, null=True)
 	point = models.PointField(blank=True, null=True)
 
-	def __unicode__(self):
-		return unicode(self.name + '->->->' +self.address)
-
 	def save(self, *args, **options):
 		if(self.lat and self.lng):
 			self.point = geos.Point(self.lat, self.lng)
