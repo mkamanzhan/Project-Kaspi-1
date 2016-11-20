@@ -8,3 +8,14 @@ body{
 	width: 100%;
 	height: 100%;
 }
+
+#my-block{
+	margin: 10px;
+	z-index: 500;
+}
+
+#my-block #my-list{
+	background-color: #fff;
+	opacity: 0.9;
+	height: 500px;
+}

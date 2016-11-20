@@ -23,8 +23,6 @@ class VenueSeeder:
 
 	total_results = 0
 
-	process_count = 0
-
 	success_count = 0
 	success_venue_count = 0
 	error_connection_count = 0
@@ -60,20 +58,34 @@ class VenueSeeder:
 
 
 
-	def runThreads(self, threads, thread_limit=20):
+	def runThreads(self, threads, thread_limit=50):
+		process = 0.0
 		length = len(threads)
 		for i in range(length):
 			if(i%thread_limit==0):
 				for thread in threads[i-thread_limit:i]:
 					thread.start()
+					print str(int(process/length*100))+'%'
+					sys.stdout.write("\033[F")
+					
+
 				for thread in threads[i-thread_limit:i]:
 					thread.join()
+					process += 1
+					print str(int(process/length*100))+'%'
+					sys.stdout.write("\033[F")
+
 					
 			elif(i == length-1):
 				for thread in threads[(i/thread_limit)*thread_limit:i+1]:
 					thread.start()
+					print str(int(process/length*100))+'%'
+					sys.stdout.write("\033[F")
 				for thread in threads[(i/thread_limit)*thread_limit:i+1]:
 					thread.join()
+					process += 1
+					print str(int(process/length*100))+'%'
+					sys.stdout.write("\033[F")
 
 
 
@@ -98,7 +110,6 @@ class VenueSeeder:
 			self.error_connection_count += 1
 		except ValueError:
 			self.error_decode_count += 1
-		self.process_count += 1
 
 
 

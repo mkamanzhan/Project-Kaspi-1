@@ -2,6 +2,7 @@ import requests
 import threading
 import math
 import time
+import sys
 
 from project_kaspi_1.models import Venue, Tip
 from project_kaspi_1.management.commands._fsq_settings import fsq_settings
@@ -60,20 +61,31 @@ class TipSeeder:
 
 
 
-	def runThreads(self, threads, thread_limit=20):
+	def runThreads(self, threads, thread_limit=50):
+		process = 0.0
 		length = len(threads)
 		for i in range(length):
 			if(i%thread_limit==0):
 				for thread in threads[i-thread_limit:i]:
 					thread.start()
+					print str(int(process/length*100))+'%'
+					sys.stdout.write("\033[F")
 				for thread in threads[i-thread_limit:i]:
 					thread.join()
+					process += 1
+					print str(int(process/length*100))+'%'
+					sys.stdout.write("\033[F")
 					
 			elif(i == length-1):
 				for thread in threads[(i/thread_limit)*thread_limit:i+1]:
 					thread.start()
+					print str(int(process/length*100))+'%'
+					sys.stdout.write("\033[F")
 				for thread in threads[(i/thread_limit)*thread_limit:i+1]:
 					thread.join()
+					process += 1
+					print str(int(process/length*100))+'%'
+					sys.stdout.write("\033[F")
 
 
 

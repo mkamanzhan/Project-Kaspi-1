@@ -40,7 +40,7 @@ ymaps.ready()
                 position: {
                     left: 'auto',
                     right: 10,
-                    top: 100
+                    top: 10,
                 }
             }
         });

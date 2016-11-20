@@ -10,12 +10,9 @@ from rest_framework.response import Response
 
 
 def index(request):
-	return render(request, 'index.html', {'data': 'something wrong'})
+	return render(request, 'index.html')
 
 def search(request):
-	return None
-
-def venues(request):
 	return None
 
 class VenueView(APIView):

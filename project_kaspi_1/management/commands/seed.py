@@ -10,6 +10,7 @@ class Command(BaseCommand):
 	
 
 	def handle(self, *args, **options):
+		start_time = time.time()
 		print '-'*5 + ' Upload Venues ' + '-'*5
 		venue_seeder = VenueSeeder()
 		venue_seeder.seed()
@@ -17,3 +18,5 @@ class Command(BaseCommand):
 		print '\n\n'+'-'*5 + ' Upload Tips ' + '-'*5
 		tip_seeder = TipSeeder()
 		tip_seeder.seed()
+
+		print '\nTotal execution time: {:.3f}'.format(time.time() - start_time) + 'sec'
