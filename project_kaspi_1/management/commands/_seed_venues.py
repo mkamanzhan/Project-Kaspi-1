@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import requests
 import math
 import threading
@@ -6,7 +7,7 @@ import time
 
 from project_kaspi_1.models import Venue
 from project_kaspi_1.management.commands._fsq_settings import fsq_settings
-
+from project_kaspi_1.dictionary import dictionary
 class VenueSeeder:
 	limit = fsq_settings['venue']['limit']
 
@@ -20,8 +21,9 @@ class VenueSeeder:
 		'v':fsq_settings['v'],
 	}
 
-
 	total_results = 0
+
+	process_count = 0
 
 	success_count = 0
 	success_venue_count = 0
@@ -30,8 +32,6 @@ class VenueSeeder:
 	error_venue_exist = 0
 
 	start_time = 0
-
-
 
 	def seed(self):
 		self.start_time = time.time()
@@ -58,7 +58,7 @@ class VenueSeeder:
 
 
 
-	def runThreads(self, threads, thread_limit=50):
+	def runThreads(self, threads, thread_limit=20):
 		process = 0.0
 		length = len(threads)
 		for i in range(length):
@@ -91,7 +91,7 @@ class VenueSeeder:
 
 	def getTotalResults(self):
 		try:
-			r = requests.get(self.url, params=self.params).json()
+			r = requests.get(self.url, params=self.params, timeout=5).json()
 			return r['response']['totalResults']
 		except:
 			raise requests.exceptions.ConnectionError
@@ -101,7 +101,7 @@ class VenueSeeder:
 		params = self.params
 		params['offset'] = offset * self.limit
 		try:
-			r = requests.get(self.url, params=params).json()
+			r = requests.get(self.url, params=params, timeout=5).json()
 			if(r['meta']['code'] == 200):
 				for item in r['response']['groups'][0]['items']:
 					self.saveVenue(item)
@@ -110,6 +110,7 @@ class VenueSeeder:
 			self.error_connection_count += 1
 		except ValueError:
 			self.error_decode_count += 1
+		self.process_count += 1
 
 
 
@@ -141,10 +142,15 @@ class VenueSeeder:
 
 		try:
 			category = item['venue']['categories'][0]['name']
+			if category in dictionary.keys():
+				category = dictionary[category]
 		except:
 			category = None
 
-
+		try:
+			icon_url = item['venue']['categories'][0]['icon']['prefix'] + "512" + item['venue']['categories'][0]['icon']['suffix']
+		except:
+			icon_url = None
 
 		try:
 			Venue(
@@ -153,7 +159,9 @@ class VenueSeeder:
 				address = address,
 				category = category,
 				lat = lat,
-				lng = lng
+				lng = lng,
+				tips = [],
+				icon_url = icon_url
 			).save()
 			self.success_venue_count += 1
 		except:

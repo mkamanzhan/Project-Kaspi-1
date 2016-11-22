@@ -20,8 +20,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^search$', views.search, name='search'),
-    url(r'^venues$', views.VenueView.as_view(), name='venues')
+    url(r'^search/$', views.SearchView.as_view(), name='search')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns, allowed=['html','json'])  

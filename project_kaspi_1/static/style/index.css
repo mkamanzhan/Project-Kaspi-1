@@ -14,8 +14,145 @@ body{
 	z-index: 500;
 }
 
-#my-block #my-list{
+/* --- --- Search Block --- --- */
+
+#my-search{
+	border-radius: 5px;
+
+	background-color: rgba(30,30,30,0.7);
+	padding: 5px;
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.7);
+	
+	margin-bottom: 10px;
+}
+
+#my-search span{
+	color: white;
+}
+
+#my-search img{
+	height: 34px;
+}
+
+#my-search input{
+	display: inline-block;
+	margin-left: 5px;
+	
+	width: 76%;
+}
+
+#my-search .col-md-12{
+	padding: 5px;
+}
+
+/* --- --- List Block --- --- */
+
+#my-list-items{
+	position: absolute;
+	width: 100%;
+
+	border:1px solid lightgrey;
+	border-radius: 5px;
+
 	background-color: #fff;
-	opacity: 0.9;
-	height: 500px;
+	
+	overflow-x: auto;
+
+	max-height: 80vh;
+
+    box-shadow: 5px 5px 5px #888888;
+}
+
+#my-list-items .item{
+	padding: 5px;
+	border-bottom:1px solid lightgrey;
+}
+
+#my-list-items .item:hover{
+	background-color: #fed700;
+	cursor: pointer;
+}
+
+#my-list-items .item.hover{
+	background-color: #fed700 !important;
+	cursor: pointer;
+}
+#my-list-items .item.selected{
+	background-color: #ef4735;
+	color: white;
+	font-weight: bold;
+}
+
+
+#my-list-items h4{
+	padding: 10px;
+	text-align: center;	
+}
+
+#my-panel{
+	background-color: #fff;
+    margin-bottom: 10px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 5px 15px;
+    box-shadow: 5px 5px 5px #888888;
+}
+
+#my-list-items span{
+	font-size: 25px;
+    float: left;
+    padding: 5px;
+    padding-right: 10px;
+}
+
+img.icon{
+	background-color: #0089d0;
+    width: 60px;
+    float: left;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
+#my-frames{
+	position: relative;
+}
+
+#my-detail{
+	position: absolute;
+	left: 100px;
+	width: 100%;
+
+	border:1px solid lightgrey;
+	border-radius: 5px;
+
+	background-color: #fff;
+	
+	overflow-x: auto;
+
+	max-height: 80vh;
+
+    box-shadow: -5px 5px 5px #888888;
+
+    padding: 5px 15px;
+}
+
+#my-detail-item{
+	padding: 5px 15px;
+}
+
+#my-list-tips .item{
+	padding: 10px 5px;
+	border-bottom:1px solid lightgrey;
+}
+
+#my-list-tips .item:first-child{
+	border-top:1px solid lightgrey;
+}
+
+#my-list-tips .item:hover{
+	background-color: #fed700;
+}
+
+#my-loading{
+	width: 100%;
 }

@@ -3,6 +3,7 @@ from rest_framework import serializers
 from project_kaspi_1.models import Venue
 
 class VenueGeoSerializer(GeoFeatureModelSerializer):
+
 	class Meta:
 		model = Venue
 		geo_field = "point"
