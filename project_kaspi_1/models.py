@@ -77,18 +77,21 @@ class Venue(models.Model):
                                 { "multi_match": {
                                     "type": "cross_fields",
                                     "fields": ["name"],
+                                    "fuzziness": "AUTO",
                                     "query": term,
                                     "boost": 10
                                 } },
                                 { "multi_match": {
                                     "type": "cross_fields",
                                     "fields": ["category","address"],
+                                    "fuzziness": "AUTO",
                                     "query": term,
                                     "boost": 5
                                 } },
                                 { "multi_match": {
                                     "type": "cross_fields",
                                     "fields": ["tips"],
+                                    "fuzziness": "AUTO",
                                     "query": term
                                 } }
                             ]
